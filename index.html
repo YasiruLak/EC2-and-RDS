@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="testStyle.css" rel="stylesheet">
+
+    <title>Customer Registration</title>
+</head>
+<body>
+<section id="content">
+    <main>
+        <div class="table-data">
+            <div class="order">
+                <form id="form" method="post">
+                    <div class="row">
+                        <div class="col">
+                            <label for="id">ID:</label>
+                            <input id="id" name="id" required type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="name">First Name:</label>
+                            <input id="name" name="name" required type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="address">Address:</label>
+                            <input id="address" name="address" required type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="age">Age:</label>
+                            <input id="age" name="age" required type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="contact">Contact:</label>
+                            <input id="contact" name="contact" required type="text">
+                        </div>
+                    </div>
+                    <button type="button" id="submit">Register</button>
+                    <button type="button"id="update">Update</button>
+                    <button type="button" id="get">Get</button>
+                    <button type="button"id="delete">Delete</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</section>
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    
+    $("#submit").click(function (){
+
+        var cusDetail = {
+            id: $("#id").val(),
+            name: $("#name").val(),
+            address: $("#address").val(),
+            age:$("#age").val(),
+            contact: $("#contact").val()
+        }
+        
+        $.ajax({
+            url: "http://127.0.0.1:5000/save",
+            method: "POST",
+            crossDomain: true, 
+            contentType: "application/json",
+            data: JSON.stringify(cusDetail),
+            success: function (response) {
+                if (response.status == 200) {
+                    alert("Successfully Saved!");
+                }   
+            },
+            error: function (ob, statusText, error) {
+                alert(statusText); 
+            }
+        });
+    })
+
+    $("#update").click(function (){
+
+        var cusDetail = {
+            id: $("#id").val(),
+            name: $("#name").val(),
+            address: $("#address").val(),
+            age:$("#age").val(),
+            contact: $("#contact").val()
+        }
+        
+        $.ajax({
+            url: "http://127.0.0.1:5000/update",
+            method: "PUT",
+            crossDomain: true, 
+            contentType: "application/json",
+            data: JSON.stringify(cusDetail),
+            success: function (response) {
+                if (response.status == 200) {
+                    alert("Successfully Updated!");
+                }   
+            },
+            error: function (ob, statusText, error) {
+                alert(statusText);  
+            }
+        });
+    })
+
+    $("#get").click(function (){
+        
+        $.ajax({
+            url: "http://127.0.0.1:5000/get",
+            method: "GET",
+            crossDomain: true, 
+            success: function (response) {
+                if (response.status == 200) {
+                    alert(response.data);
+                } 
+            },
+            error: function (ob, statusText, error) {
+                alert(statusText);  
+            }
+        });
+    })
+
+    $("#delete").click(function (){
+        
+        $.ajax({
+            url: "http://127.0.0.1:5000/delete",
+            method: "DELETE",
+            crossDomain: true, 
+            contentType: "application/json",
+            data: JSON.stringify({id:$("#id").val()}),
+            success: function (response) {
+                if (response.status == 200) {
+                    alert(response.message);
+                }else if(response.status == 400){
+                    alert(response.message);
+                }   
+            },
+            error: function (ob, statusText, error) {
+                alert(statusText); 
+            }
+        });
+    })
+
+</script>
